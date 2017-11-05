@@ -173,9 +173,9 @@ for i in range(len(img_dataP_visual[0])):
 	print("range [{}, {}]: {}".format(img_dataP_visual[1][i],img_dataP_visual[1][i+1],img_dataP_visual[0][i]))
 '''
 # equalize data using preprocessed data and its visualization
-#img_dataPEq = equalizeData(img_dataP, img_data_visual)
+img_dataPEq = equalizeData(img_dataP, img_data_visual)
 # visualize data distribution of equalized data
-#img_dataPEq_visual = visualizeData(img_dataPEq[1])
+img_dataPEq_visual = visualizeData(img_dataPEq[1])
 
 X_train, X_valid, y_train, y_valid = train_test_split(img_dataP[0], img_dataP[1], test_size=0.2)
 
