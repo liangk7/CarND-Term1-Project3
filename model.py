@@ -13,7 +13,6 @@ import cv2
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
-import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
@@ -103,51 +102,50 @@ def equalizeData(dat_paths, dat_angles, hist, bin_edges, keep_thres):
 
 
 # Generator
-def generator(dataSet, batch_size = 32, threshold = 0.3):
+def generator(dataset, batch_size = 32, threshold = 0.3):
     #print(dataSet)
-    filenames = dataSet[0]
-    angles = dataSet[1]
-    num_samples = len(angles)
+    filenames, angles = dataset
+    n_samples = len(angles)
 
 
     ##########################
     #initialize temp arrays
-    imageOutput = []
-    angleOutput = []
+    image_out = []
+    angle_out = []
     while True:
-        #generators loop forever
-        filenames, angles = sklearn.utils.shuffle(filenames, angles)
-        for i in range(num_samples):
-            #uses cv2.imread to read image, convert to RGB so it works on video.py
-            image = cv2.imread(filenames[i])
-            image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        #generator loop forever
+        filenames, angles = shuffle(filenames, angles)
+        for i in range(n_samples):
+            #read image and convert to RGB so it works on video.py
+            img = cv2.imread(filenames[i])
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             #opportunity for more preprocessing here
-            imageOutput.append(image)
-            angleOutput.append(angles[i])
+            image_out.append(img)
+            angle_out.append(angles[i])
 
-            if len(imageOutput) == batch_size:
+            if len(image_out) == batch_size:
                 #When we fill the batch, sent it out
-                X_train = np.array(imageOutput)
-                y_train = np.array(angleOutput)
+                X_train = np.array(image_out)
+                y_train = np.array(image_out)
                 #empty temp arrays
-                imageOutput = []
-                angleOutput = []
-                yield sklearn.utils.shuffle(X_train, y_train)
+                image_out = []
+                angle_out = []
+                yield shuffle(X_train, y_train)
 
             if abs(angles[i]) > threshold:
                 #create a flipped version if the angle is above a certain threshold
-                imageOutput.append(cv2.flip(image,1))
-                angleOutput.append(angles[i]*-1.0)
+                image_out.append(cv2.flip(img, 1))
+                angle_out.append(-1.0 * angles[i])
 
-                if len(imageOutput) == batch_size:
+                if len(image_out) == batch_size:
                     #When we fill the batch, sent it out
-                    X_train = np.array(imageOutput)
-                    y_train = np.array(angleOutput)
+                    X_train = np.array(image_out)
+                    y_train = np.array(angle_out)
                     #empty temp arrays
-                    imageOutput = []
-                    angleOutput = []
-                    yield sklearn.utils.shuffle(X_train, y_train)
+                    image_out = []
+                    angle_out = []
+                    yield shuffle(X_train, y_train)
 
 ###################################
 # DATA - IMPORTING
@@ -192,16 +190,23 @@ validation_generator = generator((X_valid, y_valid), batch_size = n_batch, thres
 # Keras Modeling
 from keras.models import Model, Sequential
 from keras.layers import Cropping2D, Lambda, MaxPooling2D, Dropout, Flatten, Dense
-from keras.layers.convolutional import Convolution2D
+from keras.layers.convolutional import Conv2D
 
 model = Sequential()
 model.add(Lambda(lambda x: (x/255.0) - 0.5, input_shape=(160, 320, 3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
-model.add(Convolution2D(24,5,5,subsample=(2,2),activation="elu"))
-model.add(Convolution2D(36,5,5,subsample=(2,2),activation="elu"))
-model.add(Convolution2D(48,5,5,subsample=(2,2),activation="elu"))
-model.add(Convolution2D(64,3,3,activation="elu"))
-model.add(Convolution2D(64,3,3,activation="elu"))
+model.add(Conv2D(24, (5,5), strides=(2,2), activation="elu"))
+model.add(Conv2D(36, (5,5), strides=(2,2), activation="elu"))
+model.add(Conv2D(48, (5,5), strides=(2,2), activation="elu"))
+model.add(Conv2D(64, (3,3), activation="elu"))
+model.add(Conv2D(64, (3,3), activation="elu"))
+'''
+model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation="elu"))
+model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation="elu"))
+model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation="elu"))
+model.add(Convolution2D(64, 3, 3, activation="elu"))
+model.add(Convolution2D(64, 3, 3, activation="elu"))
+'''
 model.add(Flatten())
 model.add(Dense(100))
 model.add(Dropout(0.5))
