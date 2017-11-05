@@ -74,7 +74,7 @@ def visualizeData(dat_angles):
 	#plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
 	#plt.show()
 	plt.savefig('images/anglesHist.png')
-	return (hist, bin_edges)
+	return (hist, bin_edges, angles_avg)
 
 # Equalize dataset
 def equalizeData(dat_paths, dat_angles, hist, bin_edges, keep_thres):
@@ -88,7 +88,7 @@ def equalizeData(dat_paths, dat_angles, hist, bin_edges, keep_thres):
 	for i in range(len(dat_angles)):
 		# check which bin the angle falls under
 		for j in range(len(hist)):
-			if (dat_angles[i] > bin_edges[j]) and (dat_angles <= bin_edges[j+1]):
+			if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]):
 				# append filepath and angle if the hist count is within threshold
 				if hist[j] <= keep_thres:
 					hist_count += 1
@@ -173,11 +173,11 @@ for i in range(len(img_dataP_visual[0])):
 	print("range [{}, {}]: {}".format(img_dataP_visual[1][i],img_dataP_visual[1][i+1],img_dataP_visual[0][i]))
 '''
 # equalize data using preprocessed data and its visualization
-img_dataPEq = equalizeData(img_dataP, img_data_visual)
+img_dataPEq = equalizeData(img_dataP[0], img_dataP[1], img_data_visual[0], img_data_visual[1], img_data_visual[2])
 # visualize data distribution of equalized data
 img_dataPEq_visual = visualizeData(img_dataPEq[1])
 
-X_train, X_valid, y_train, y_valid = train_test_split(img_dataP[0], img_dataP[1], test_size=0.2)
+X_train, X_valid, y_train, y_valid = train_test_split(img_dataPEq[0], img_dataPEq[1], test_size=0.2)
 
 train_generator = generator((X_train, y_train), batch_size = n_batch, threshold = 0)
 validation_generator = generator((X_valid, y_valid), batch_size = n_batch, threshold = 0)
@@ -190,11 +190,12 @@ validation_generator = generator((X_valid, y_valid), batch_size = n_batch, thres
 # Keras Modeling
 from keras.models import Model, Sequential
 from keras.layers import Cropping2D, Lambda, MaxPooling2D, Dropout, Flatten, Dense
-from keras.layers.convolutional import Conv2D
+from keras.layers.convolutional import Conv2D, Convolution2D
 
 model = Sequential()
 model.add(Lambda(lambda x: (x/255.0) - 0.5, input_shape=(160, 320, 3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
+'''
 model.add(Conv2D(24, (5,5), strides=(2,2), activation="elu"))
 model.add(Conv2D(36, (5,5), strides=(2,2), activation="elu"))
 model.add(Conv2D(48, (5,5), strides=(2,2), activation="elu"))
@@ -206,7 +207,7 @@ model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation="elu"))
 model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation="elu"))
 model.add(Convolution2D(64, 3, 3, activation="elu"))
 model.add(Convolution2D(64, 3, 3, activation="elu"))
-'''
+
 model.add(Flatten())
 model.add(Dense(100))
 model.add(Dropout(0.5))
