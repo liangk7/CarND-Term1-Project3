@@ -86,34 +86,34 @@ The general structure of `model.py` incorporates data normalization and sample e
 
 #### Model architecture
 
-	|  Layer			|  Description					|
-	|------------------:|------------------------------:|
-	|  Input			|  160x320x3 RGB image			|
-	|  Normalization 	|  [0,255] to [0,1]				|
-	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
-	|					|	outputs 62x196x24			|
-	|  ELU 				|								|
-	|  Max pooling		|  outputs 24@31x98				|
-	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
-	|					|	outputs 36x28x94			|
-	|  ELU 				|								|
-	|  Max pooling		|  outputs 36@14x47				|
-	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
-	|					|	outputs 48@10x44			|
-	|  ELU 	 			|								|
-	|  Max pooling		|  outputs 48@5x22				|
-	|  Convolution 3x3	|  1x1 stride, VALID padding,	|
-	|					|	outputs 64@3x20				|
-	|  ELU 	 			|								|
-	|  Convolution 3x3	|  1x1 stride, VALID padding,	|
-	|					|	outputs 64@1x18				|
-	|  ELU 	 			|								|
-	|  Flatten			|  64@1x18 -> 1152				|
-	|  Fully Connected	|  outputs 100					|
-	|  Dropout			|  keep_probability: 0.5 		|
-	|  Fully Connected	|  outputs 50					|
-	|  Fully Connected	|  outputs 10					|
-	|  Fully Connected	|  outputs 1					|
+|  Layer			|  Description					|
+|------------------:|------------------------------:|
+|  Input			|  160x320x3 RGB image			|
+|  Normalization 	|  [0,255] to [0,1]				|
+|  Convolution 5x5	|  2x2 stride, VALID padding,	|
+|					|	outputs 62x196x24			|
+|  ELU 				|								|
+|  Max pooling		|  outputs 24@31x98				|
+|  Convolution 5x5	|  2x2 stride, VALID padding,	|
+|					|	outputs 36x28x94			|
+|  ELU 				|								|
+|  Max pooling		|  outputs 36@14x47				|
+|  Convolution 5x5	|  2x2 stride, VALID padding,	|
+|					|	outputs 48@10x44			|
+|  ELU 	 			|								|
+|  Max pooling		|  outputs 48@5x22				|
+|  Convolution 3x3	|  1x1 stride, VALID padding,	|
+|					|	outputs 64@3x20				|
+|  ELU 	 			|								|
+|  Convolution 3x3	|  1x1 stride, VALID padding,	|
+|					|	outputs 64@1x18				|
+|  ELU 	 			|								|
+|  Flatten			|  64@1x18 -> 1152				|
+|  Fully Connected	|  outputs 100					|
+|  Dropout			|  keep_probability: 0.5 		|
+|  Fully Connected	|  outputs 50					|
+|  Fully Connected	|  outputs 10					|
+|  Fully Connected	|  outputs 1					|
 
 
 #### Dataset creation
