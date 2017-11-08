@@ -68,7 +68,8 @@ The general structure of `model.py` incorporates data normalization and sample e
 
 
 #### Reducing overfitting
-
+By observing the data, one may notice that there is a large bias towards the angle measurement of `0`. Although `0` is a common, and often desirable, angle value (especially on straightaways), the likelihood of its substantial repetition may also stem from error in the simulation dataset. For example, during the development of data, there may be instances (on a curve) that the user turns too sharply and must compensate by counter-steering. Such action could result in a `0` angle measurement (or even a measurement of opposite polarity). Thus, with the use of linear regression, it may ultimately be more beneficial to limit these types of errors by removing the `0` angle measurements altogether.
+Relative to this occurrence, it is obvious that most angle measurements tend towards smaller magnitude values (closer to 0). Thus, to prevent a large bias in the linear regression function, equalizing the dataset across histogram bins proves to be a valuable technique in developing an accurate model.
 
 #### Parameter tuning
 
@@ -117,7 +118,7 @@ The general structure of `model.py` incorporates data normalization and sample e
 
 
 #### Dataset creation
-
+The creation of a dataset is performed using 
 
 
 ---
