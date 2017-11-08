@@ -32,11 +32,11 @@ This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3
 ### Required Files
 
 #### Files submitted
-- `model.py`
-- `drive.py`
-- `model.h5`
-- `writeup.md`
-- `video.mp4`
+- `model.py`:	utilizes a dataset of images and angles to create `model.h5`
+- `drive.py`:	demonstrates performance of `model.h5` in the **simulator**
+- `model.h5`:	file that contains information on the autonomous driving model
+- `writeup.md`:	contains the information of project design and usage
+- `video.mp4`:	animation that demonstrates the `model.h5` performance
 
 ---
 
