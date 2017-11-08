@@ -34,7 +34,7 @@ This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3
 #### Files submitted
 - `model.py`:	utilizes a dataset of images and angles to create `model.h5`
 - `drive.py`:	demonstrates performance of `model.h5` in the **simulator**
-- `model.h5`:	file that contains information on the autonomous driving model
+- `model.h5`:	file that contains parameters of the autonomous driving model
 - `writeup.md`:	contains the information of project design and usage
 - `video.mp4`:	animation that demonstrates the `model.h5` performance
 
@@ -87,7 +87,7 @@ The general structure of `model.py` incorporates data normalization and sample e
 #### Model architecture
 
 |  Layer			|  Description					|
-|------------------:|------------------------------:|
+|:------------------|------------------------------:|
 |  Input			|  160x320x3 RGB image			|
 |  Normalization 	|  [0,255] to [0,1]				|
 |  Convolution 5x5	|  2x2 stride, VALID padding,	|
