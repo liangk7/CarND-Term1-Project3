@@ -14,7 +14,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./example_path "example_text"
+[image1]: ./images/figure_nvidiaCNNarchitecture.png "NVIDIA architecture"
 [image2]: ./example_path "example_text"
 
 #### Sources
@@ -37,7 +37,6 @@ This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3
 - `model.h5`
 - `writeup.md`
 - `video.mp4`
-![alt text][image1]
 
 ---
 
@@ -63,6 +62,9 @@ In order to complete the project, one must follow these steps:
 ### Model Architecture and Training Strategy
 
 #### Model architecture
+The general structure of `model.py` incorporates data normalization and sample equalization. When getting to the convolutional neural network, the model employed is the Nvidia CNN architecture. 
+
+![alt text][image1]
 
 
 #### Reducing overfitting
@@ -83,6 +85,35 @@ In order to complete the project, one must follow these steps:
 
 
 #### Model architecture
+
+	|  Layer			|  Description					|
+	|:-----------------:|:-----------------------------:|
+	|  Input			|  160x320x3 RGB image			|
+	|  Normalization 	|  [0,255] to [0,1]				|
+	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
+	|					|	outputs 62x196x24			|
+	|  ELU 				|								|
+	|  Max pooling		|  outputs 24@31x98				|
+	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
+	|					|	outputs 36x28x94			|
+	|  ELU 				|								|
+	|  Max pooling		|  outputs 36@14x47				|
+	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
+	|					|	outputs 48@10x44			|
+	|  ELU 	 			|								|
+	|  Max pooling		|  outputs 48@5x22				|
+	|  Convolution 3x3	|  1x1 stride, VALID padding,	|
+	|					|	outputs 64@3x20				|
+	|  ELU 	 			|								|
+	|  Convolution 3x3	|  1x1 stride, VALID padding,	|
+	|					|	outputs 64@1x18				|
+	|  ELU 	 			|								|
+	|  Flatten			|  64@1x18 -> 1152				|
+	|  Fully Connected	|  outputs 100					|
+	|  Dropout			|  keep_probability: 0.5 		|
+	|  Fully Connected	|  outputs 50					|
+	|  Fully Connected	|  outputs 10					|
+	|  Fully Connected	|  outputs 1					|
 
 
 #### Dataset creation
