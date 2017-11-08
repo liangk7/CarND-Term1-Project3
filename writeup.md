@@ -2,7 +2,7 @@
 
 ---
 
-**Developing a Autonomous Driving Model using Behavioral Cloning
+**Developing a Autonomous Driving Model using Behavioral Cloning**
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior 
@@ -35,7 +35,7 @@ This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3
 - `model.py`
 - `drive.py`
 - `model.h5`
-- 'writeup.md'
+- `writeup.md`
 - `video.mp4`
 ![alt text][image1]
 
@@ -47,30 +47,46 @@ This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3
 As outlined in the project skeleton, `model.py` uses data from the `driving_log.csv` file and `IMG/` folder to create a model `model.h5`. This model is then demoed in the **simulator's** *automatic* setting using `drive.py`.
 
 #### Code Usage
-
+In order to complete the project, one must follow these steps:
+1) Access the **simulator** (listed as a source)
+- choose a track and select *Training Mode*
+- record training data to a known folder directory
+2) In order to develop a `model.h5` file, one must update and run the `model.py` file
+- install necessary libraries for python
+- change *Paths* variables to directories of recorded data (as needed)
+3) To evaluate model performance, run `drive.py`
+- be sure to pass `model.py` as the model `python drive.py model.h5`
+- open the **simulator** and select *Autonomous Mode*
 
 ---
 
 ### Model Architecture and Training Strategy
 
-#### Has an appropriate model architecture been employed for the task?
+#### Model architecture
 
-#### Has an attempt been made to reduce overfitting of the model?
 
-#### Have the model parameters been tuned appropriately?
+#### Reducing overfitting
 
-#### Is the training data chosen appropriately?
+
+#### Parameter tuning
+
+
+#### Training data
+
 
 
 ---
 
 ### Architecture and Training Documentation
 
-#### Is the solution design documented?
+#### Solution performance
 
-#### Is the model architecture documented?
 
-#### Is the creation of the training dataset and training process documented?
+#### Model architecture
+
+
+#### Dataset creation
+
 
 
 ---
@@ -78,6 +94,7 @@ As outlined in the project skeleton, `model.py` uses data from the `driving_log.
 ### Simulation
 
 #### Is the car able to navigate correctly on test data?
+
 
 
 ---
