@@ -62,7 +62,7 @@ In order to complete the project, one must follow these steps:
 ### Model Architecture and Training Strategy
 
 #### Model architecture
-The general structure of `model.py` incorporates data normalization and sample equalization. When getting to the convolutional neural network, the model employed is the Nvidia CNN architecture. 
+The general structure of `model.py` incorporates data normalization and sample equalization. When getting to the convolutional neural network, the model (using  keras layers) employed is the Nvidia CNN architecture. 
 
 ![alt text][image1]
 
