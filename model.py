@@ -78,27 +78,20 @@ def visualizeData(dat_angles):
 
 # Equalize dataset
 def equalizeData(dat_paths, dat_angles, hist, bin_edges, keep_thres):
-	'''
-	remove samples from a bin down to the keep_thres value
-	'''
-	dat_paths, dat_angles = shuffle(dat_paths, dat_angles, random_state=0)
-	dat_paths_out = []
-	dat_angles_out = []
-	hist_count = np.zeros(len(hist))
-	for i in range(len(dat_angles)):
-		# check which bin the angle falls under
-		for j in range(len(hist)):
-			if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]):
-				# append filepath and angle if the hist count is within threshold
-				if hist[j] <= keep_thres:
-					hist_count += 1
-					dat_paths_out.append(dat_paths[i])
-					dat_angles_out.append(dat_angles[i])
-				# if hist count is above threshold, omit sample
-				continue
-	dat_paths_out = np.array(dat_paths_out)
-	dat_angles_out = np.array(dat_angles_out)
-	return (dat_paths_out, dat_angles_out)
+        dat_paths, dat_angles = shuffle(dat_paths, dat_angles, random_state=0)
+        dat_paths_out = []
+        dat_angles_out = []
+        hist_count = np.zeros(len(hist))
+        for i in range(len(dat_angles)): # check which bin the angle falls under
+                for j in range(len(hist)):
+                        if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]): # append filepath and angle if the hist count is within threshold
+                                if (np.random.rand() < (keep_thres / hist[j])): #if hist_count[j] <= keep_thres: #hist_count[j] += 1
+                                        dat_paths_out.append(dat_paths[i])
+                                        dat_angles_out.append(dat_angles[i]) # if hist count is above threshold, omit sample
+                                        continue
+        dat_paths_out = np.array(dat_paths_out)
+        dat_angles_out = np.array(dat_angles_out)
+        return (dat_paths_out, dat_angles_out)
 
 
 # Generator
@@ -127,7 +120,7 @@ def generator(dataset, batch_size = 32, threshold = 0.3):
             if len(image_out) == batch_size:
                 #When we fill the batch, sent it out
                 X_train = np.array(image_out)
-                y_train = np.array(image_out)
+                y_train = np.array(angle_out)
                 #empty temp arrays
                 image_out = []
                 angle_out = []
@@ -168,10 +161,6 @@ with open(img_csvPath) as csvfile:
 img_dataP = vectorizeData(img_paths)
 # visualize data distribution
 img_data_visual = visualizeData(img_dataP[1])
-'''
-for i in range(len(img_dataP_visual[0])):
-	print("range [{}, {}]: {}".format(img_dataP_visual[1][i],img_dataP_visual[1][i+1],img_dataP_visual[0][i]))
-'''
 # equalize data using preprocessed data and its visualization
 img_dataPEq = equalizeData(img_dataP[0], img_dataP[1], img_data_visual[0], img_data_visual[1], img_data_visual[2])
 # visualize data distribution of equalized data
@@ -225,12 +214,15 @@ history_object = model.fit_generator(train_generator, samples_per_epoch = len(X_
 # MODEL - PERFORMANCE
 ###################################
 
+plt.gcf().clear()
 plt.plot(history_object.history['loss'])
 plt.plot(history_object.history['val_loss'])
 plt.title('model mean squared error loss')
 plt.ylabel('mean squared error loss')
 plt.xlabel('epoch')
 plt.legend(['training set', 'validation set'], loc='upper right')
+plt.savefig('error_curve.png')
+plt.ion
 plt.show()
 
 ###################################
