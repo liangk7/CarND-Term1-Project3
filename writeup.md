@@ -87,7 +87,7 @@ The general structure of `model.py` incorporates data normalization and sample e
 #### Model architecture
 
 	|  Layer			|  Description					|
-	|:-----------------:|:-----------------------------:|
+	|------------------:|------------------------------:|
 	|  Input			|  160x320x3 RGB image			|
 	|  Normalization 	|  [0,255] to [0,1]				|
 	|  Convolution 5x5	|  2x2 stride, VALID padding,	|
