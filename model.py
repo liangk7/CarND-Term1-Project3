@@ -43,13 +43,13 @@ def vectorizeData(dat_csv, correction=0.2, null_thres=0.001):
 	dat_filepath = []
 	dat_angle = []
 	for data in dat_csv:
-		# check that angle above threshold
+		# check that angle is above threshold
 		if abs(float(data[3])) > null_thres:
 			for i in range(3):
 				if i == 0:
 					correction_angle = 0
 				else:
-					correction_angle = -1 ** (i-1) * correction
+					correction_angle = (-1 ** (i-1)) * correction
 				temp_path = data[i]
 				# append data images and angles to lists
 				dat_filepath.append(img_jpgPath + temp_path.split('/')[-1])
@@ -66,12 +66,9 @@ def equalizeData(dataset):
         angles_avg = len(dat_angles) / n_bins
         # visualize histogram of data
         hist, bin_edges = np.histogram(dat_angles, bins=n_bins)
-        width = 0.8
-        #width = 0.8 * (bin_edges[1] - bin_edges[0])
-        #center = (bin_edges[:-1] + bin_edges[1:]) / 2
-        #plt.bar(center, hist, align = 'center', width = width)
-        indices = np.arange(len(hist))
-        plt.bar(indices, hist, width=width, color='b', label='raw data')
+        width = 0.8 * (bin_edges[1] - bin_edges[0])
+        center = (bin_edges[:-1] + bin_edges[1:]) / 2
+	plt.bar(center, hist, align = 'center', width=width, color='b', label='raw data')
         # show average line
         plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
 
@@ -91,8 +88,8 @@ def equalizeData(dataset):
         dat_paths_out = np.array(dat_paths_out)
         dat_angles_out = np.array(dat_angles_out)
         # visualize histogram of adjusted data
-        plt.bar([i+0.25*width for i in indices], hist_count, width=0.5*width, color='r', alpha=0.5, label='adjusted data')
-        plt.show
+        plt.bar(center, hist_count, align = 'center', width=0.5*width, color='r', alpha=0.5, label='adjusted data')
+        plt.show()
         plt.savefig('images/anglesHist.png')
         return (dat_paths_out, dat_angles_out)
 
