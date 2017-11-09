@@ -82,9 +82,7 @@ def equalizeData(dataset):
                                 if hist_count[j] <= angles_avg:
                                     hist_count[j] += 1
                                     dat_paths_out.append(dat_paths[i])
-                                    dat_angles_out.append(dat_angles[i]) 
-                                    # if hist count is above threshold, omit sample
-                                    continue
+                                    dat_angles_out.append(dat_angles[i])
         dat_paths_out = np.array(dat_paths_out)
         dat_angles_out = np.array(dat_angles_out)
         # visualize histogram of adjusted data
@@ -96,49 +94,35 @@ def equalizeData(dataset):
 
 # Generator
 def generator(dataset, batch_size = 32, threshold = 0.3):
-    #print(dataSet)
-    filenames, angles = dataset
-    n_samples = len(angles)
-
-
-    ##########################
-    #initialize temp arrays
-    image_out = []
-    angle_out = []
-    while True:
-        #generator loop forever
-        filenames, angles = shuffle(filenames, angles)
-        for i in range(n_samples):
-            #read image and convert to RGB so it works on video.py
-            img = cv2.imread(filenames[i])
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-            #opportunity for more preprocessing here
-            image_out.append(img)
-            angle_out.append(angles[i])
-
-            if len(image_out) == batch_size:
-                #When we fill the batch, sent it out
-                X_train = np.array(image_out)
-                y_train = np.array(angle_out)
-                #empty temp arrays
-                image_out = []
-                angle_out = []
-                yield shuffle(X_train, y_train)
-
-            if abs(angles[i]) > threshold:
-                #create a flipped version if the angle is above a certain threshold
-                image_out.append(cv2.flip(img, 1))
-                angle_out.append(-1.0 * angles[i])
-
-                if len(image_out) == batch_size:
-                    #When we fill the batch, sent it out
-                    X_train = np.array(image_out)
-                    y_train = np.array(angle_out)
-                    #empty temp arrays
-                    image_out = []
-                    angle_out = []
-                    yield shuffle(X_train, y_train)
+	#print(dataSet)
+	filenames, angles = dataset
+	n_samples = len(angles)
+	
+	##########################
+	#initialize temp arrays
+	image_out = []
+	angle_out = []
+	while True:
+		filenames, angles = shuffle(filenames, angles)
+		for i in range(n_samples):
+			#read image and convert to RGB
+			img = cv2.imread(filenames[i])
+			img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+			image_out.append(img)
+			angle_out.append(angles[i])
+			# add a mirrored data sample if the angle is above a certain threshold
+			if len(image_out) != batch_size and abs(angles[i]) > threshold:
+				image_out.append(cv2.flip(img, 1))
+				angle_out.append(-1.0 * angles[i])
+			# when batch size is achieved, push the dataset
+			if len(image_out) == batch_size:
+				#When we fill the batch, sent it out
+				X_train = np.array(image_out)
+				y_train = np.array(angle_out)
+				#empty temp arrays
+				image_out = []
+				angle_out = []
+				yield shuffle(X_train, y_train)
 
 ###################################
 # DATA - IMPORTING
@@ -213,10 +197,10 @@ history_object = model.fit_generator(train_generator, samples_per_epoch = len(X_
 plt.gcf().clear()
 plt.plot(history_object.history['loss'])
 plt.plot(history_object.history['val_loss'])
-plt.title('model mean squared error loss')
-plt.ylabel('mean squared error loss')
-plt.xlabel('epoch')
-plt.legend(['training set', 'validation set'], loc='upper right')
+plt.title('Mean Squared Error vs Epochs')
+plt.ylabel('MSE')
+plt.xlabel('Epochs')
+plt.legend(['training', 'validation'], loc='upper right')
 plt.savefig('error_curve.png')
 plt.ion
 plt.show()
