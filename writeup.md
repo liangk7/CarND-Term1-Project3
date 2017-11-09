@@ -72,7 +72,9 @@ By observing the data, one may notice that there is a large bias towards the ang
 Relative to this occurrence, it is obvious that most angle measurements tend towards smaller magnitude values (closer to 0). Thus, to prevent a large bias in the linear regression function, equalizing the dataset across histogram bins proves to be a valuable technique in developing an accurate model.
 
 #### Parameter tuning
-
+The tunable parameters outside of the convultional neural network are:
+- epochs: increase of this parameter will result in a convergence of error loss between training and validation datasets. In the case of the Nvidia CNN model, the choice of 5 epochs yielded a sufficient result for simulation performance
+- batch size: increase of this parameter will result in an inability to generalize which produces a lower quality model.
 
 #### Training data
 
