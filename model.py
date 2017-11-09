@@ -71,14 +71,14 @@ def equalizeData(dataset):
 	plt.bar(center, hist, align = 'center', width=width, color='b', label='raw data')
         # show average line
         plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
-
+	# create output lists of filepaths and angles
         dat_paths_out = []
         dat_angles_out = []
         hist_count = np.zeros(len(hist))
         for i in range(len(dat_angles)): # check which bin the angle falls under
                 for j in range(len(hist)):
-                        if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]): # append filepath and angle if the hist count is within threshold
-                                #if (np.random.rand() < (keep_thres / hist[j])): 
+                        if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]):
+				# append filepath and angle if the hist count is within threshold
                                 if hist_count[j] <= angles_avg:
                                     hist_count[j] += 1
                                     dat_paths_out.append(dat_paths[i])
@@ -87,7 +87,6 @@ def equalizeData(dataset):
         dat_angles_out = np.array(dat_angles_out)
         # visualize histogram of adjusted data
         plt.bar(center, hist_count, align = 'center', width=0.5*width, color='r', alpha=0.5, label='adjusted data')
-        plt.show()
         plt.savefig('images/anglesHist.png')
         return (dat_paths_out, dat_angles_out)
 
@@ -111,7 +110,7 @@ def generator(dataset, batch_size = 32, threshold = 0.3):
 			image_out.append(img)
 			angle_out.append(angles[i])
 			# add a mirrored data sample if the angle is above a certain threshold
-			if len(image_out) != batch_size and abs(angles[i]) > threshold:
+			if len(image_out) < batch_size and abs(angles[i]) > threshold:
 				image_out.append(cv2.flip(img, 1))
 				angle_out.append(-1.0 * angles[i])
 			# when batch size is achieved, push the dataset
@@ -164,13 +163,7 @@ from keras.layers.convolutional import Conv2D, Convolution2D
 model = Sequential()
 model.add(Lambda(lambda x: (x/255.0) - 0.5, input_shape=(160, 320, 3)))
 model.add(Cropping2D(cropping=((70,25),(0,0))))
-'''
-model.add(Conv2D(24, (5,5), strides=(2,2), activation="elu"))
-model.add(Conv2D(36, (5,5), strides=(2,2), activation="elu"))
-model.add(Conv2D(48, (5,5), strides=(2,2), activation="elu"))
-model.add(Conv2D(64, (3,3), activation="elu"))
-model.add(Conv2D(64, (3,3), activation="elu"))
-'''
+
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation="elu"))
 model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation="elu"))
 model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation="elu"))
@@ -202,7 +195,7 @@ plt.ylabel('MSE')
 plt.xlabel('Epochs')
 plt.legend(['training', 'validation'], loc='upper right')
 plt.savefig('error_curve.png')
-plt.ion
+plt.ion()
 plt.show()
 
 ###################################
