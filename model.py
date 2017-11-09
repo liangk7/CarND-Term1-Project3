@@ -59,38 +59,41 @@ def vectorizeData(dat_csv, correction=0.2, null_thres=0.001):
 	dat_angle = np.array(dat_angle)
 	return (dat_filepath, dat_angle)
 
-# Visualize dataset
-def visualizeData(dat_angles):
-	'''
-	takes input array of image angles and outputs the distribution in a histogram
-	'''
-	n_bins = 21
-	angles_avg = len(dat_angles) / n_bins
-	hist, bin_edges = np.histogram(dat_angles, bins=n_bins)
-	width = 0.5 * (bin_edges[1] - bin_edges[0])
-	center = (bin_edges[:-1] + bin_edges[1:]) / 2
-	plt.bar(center, hist, align = 'center', width = width)
-	#show average line
-	#plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
-	#plt.show()
-	plt.savefig('images/anglesHist.png')
-	return (hist, bin_edges, angles_avg)
-
 # Equalize dataset
-def equalizeData(dat_paths, dat_angles, hist, bin_edges, keep_thres):
-        dat_paths, dat_angles = shuffle(dat_paths, dat_angles, random_state=0)
+def equalizeData(dataset):
+        dat_paths, dat_angles = shuffle(dataset[0], dataset[1], random_state=0)
+        n_bins = 21
+        angles_avg = len(dat_angles) / n_bins
+        # visualize histogram of data
+        hist, bin_edges = np.histogram(dat_angles, bins=n_bins)
+        width = 0.8
+        #width = 0.8 * (bin_edges[1] - bin_edges[0])
+        #center = (bin_edges[:-1] + bin_edges[1:]) / 2
+        #plt.bar(center, hist, align = 'center', width = width)
+        indices = np.arange(len(hist))
+        plt.bar(indices, hist, width=width, color='b', label='raw data')
+        # show average line
+        plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
+
         dat_paths_out = []
         dat_angles_out = []
         hist_count = np.zeros(len(hist))
         for i in range(len(dat_angles)): # check which bin the angle falls under
                 for j in range(len(hist)):
                         if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]): # append filepath and angle if the hist count is within threshold
-                                if (np.random.rand() < (keep_thres / hist[j])): #if hist_count[j] <= keep_thres: #hist_count[j] += 1
-                                        dat_paths_out.append(dat_paths[i])
-                                        dat_angles_out.append(dat_angles[i]) # if hist count is above threshold, omit sample
-                                        continue
+                                #if (np.random.rand() < (keep_thres / hist[j])): 
+                                if hist_count[j] <= angles_avg:
+                                    hist_count[j] += 1
+                                    dat_paths_out.append(dat_paths[i])
+                                    dat_angles_out.append(dat_angles[i]) 
+                                    # if hist count is above threshold, omit sample
+                                    continue
         dat_paths_out = np.array(dat_paths_out)
         dat_angles_out = np.array(dat_angles_out)
+        # visualize histogram of adjusted data
+        plt.bar([i+0.25*width for i in indices], hist_count, width=0.5*width, color='r', alpha=0.5, label='adjusted data')
+        plt.show
+        plt.savefig('images/anglesHist.png')
         return (dat_paths_out, dat_angles_out)
 
 
@@ -159,12 +162,8 @@ with open(img_csvPath) as csvfile:
 
 # vectorize data
 img_dataP = vectorizeData(img_paths)
-# visualize data distribution
-img_data_visual = visualizeData(img_dataP[1])
 # equalize data using preprocessed data and its visualization
-img_dataPEq = equalizeData(img_dataP[0], img_dataP[1], img_data_visual[0], img_data_visual[1], img_data_visual[2])
-# visualize data distribution of equalized data
-img_dataPEq_visual = visualizeData(img_dataPEq[1])
+img_dataPEq = equalizeData(img_dataP)
 
 X_train, X_valid, y_train, y_valid = train_test_split(img_dataPEq[0], img_dataPEq[1], test_size=0.2)
 
