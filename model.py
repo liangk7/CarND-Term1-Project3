@@ -49,7 +49,7 @@ def vectorizeData(dat_csv, correction=0.2, null_thres=0.001):
 				if i == 0:
 					correction_angle = 0
 				else:
-					correction_angle = (-1 ** (i-1)) * correction
+					correction_angle = (-1) ** (i-1) * correction
 				temp_path = data[i]
 				# append data images and angles to lists
 				dat_filepath.append(img_jpgPath + temp_path.split('/')[-1])
@@ -87,7 +87,7 @@ def equalizeData(dataset):
 	dat_angles_out = np.array(dat_angles_out)
 	# visualize histogram of adjusted data
 	plt.bar(center, hist_count, align='center', width=0.5*width, color='r', alpha=0.5, label='adjusted data')
-	plt.savefig('images/anglesHist.png')
+	plt.savefig('images/plot_anglesHist.png')
 	return (dat_paths_out, dat_angles_out)
 
 
@@ -194,7 +194,7 @@ plt.title('Mean Squared Error vs Epochs')
 plt.ylabel('MSE')
 plt.xlabel('Epochs')
 plt.legend(['training', 'validation'], loc='upper right')
-plt.savefig('error_curve.png')
+plt.savefig('plot_errorLoss.png')
 plt.ion()
 plt.show()
 

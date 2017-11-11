@@ -15,7 +15,8 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./images/figure_nvidiaCNNarchitecture.png "NVIDIA architecture"
-[image2]: ./example_path "example_text"
+[image2]: ./images/plot_anglesHist.png "Angle Equalization"
+[image3]: ./images/
 
 #### Sources
 Udacity SDC Nanodegree: [CarND-Behavioral-Cloning-P3](https://github.com/udacity/CarND-Behavioral-Cloning-P3)
@@ -77,7 +78,7 @@ The tunable parameters outside of the convultional neural network are:
 - batch size: increase of this parameter will result in an inability to generalize which produces a lower quality model.
 
 #### Training data
-
+Since the training data is a compilation of image trios gathered 
 
 
 ---
@@ -122,6 +123,7 @@ The tunable parameters outside of the convultional neural network are:
 #### Dataset creation
 The creation of a dataset is performed using 
 
+![alt text][image2]
 
 ---
 
