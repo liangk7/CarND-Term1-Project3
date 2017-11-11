@@ -68,9 +68,9 @@ def equalizeData(dataset):
 	hist, bin_edges = np.histogram(dat_angles, bins=n_bins)
 	width = 0.8 * (bin_edges[1] - bin_edges[0])
 	center = (bin_edges[:-1] + bin_edges[1:]) / 2
-	plt.bar(center, hist, align='center', width=width, color='b', label='raw data')
+	#plt.bar(center, hist, align='center', width=width, color='b', label='raw data')
 	# show average line
-	plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
+	#plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
 	# create output lists of filepaths and angles
 	dat_paths_out = []
 	dat_angles_out = []
@@ -86,8 +86,8 @@ def equalizeData(dataset):
 	dat_paths_out = np.array(dat_paths_out)
 	dat_angles_out = np.array(dat_angles_out)
 	# visualize histogram of adjusted data
-	plt.bar(center, hist_count, align='center', width=0.5*width, color='r', alpha=0.5, label='adjusted data')
-	plt.savefig('images/plot_anglesHist.png')
+	#plt.bar(center, hist_count, align='center', width=0.5*width, color='r', alpha=0.5, label='adjusted data')
+	#plt.savefig('images/plot_anglesHist.png')
 	return (dat_paths_out, dat_angles_out)
 
 
@@ -187,7 +187,7 @@ print('Model Saved')
 ###################################
 # MODEL - PERFORMANCE
 ###################################
-
+'''
 plt.gcf().clear()
 plt.plot(history_object.history['loss'])
 plt.plot(history_object.history['val_loss'])
@@ -198,7 +198,7 @@ plt.legend(['training', 'validation'], loc='upper right')
 plt.savefig('images/plot_errorLoss.png')
 plt.ion()
 plt.show()
-
+'''
 ###################################
 # SCRIPT - CLOSING
 ###################################
