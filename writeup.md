@@ -16,7 +16,7 @@ The goals / steps of this project are the following:
 
 [image1]: ./images/figure_nvidiaCNNarchitecture.png "NVIDIA architecture"
 [image2]: ./images/plot_anglesHist.png "Angle Equalization"
-[image3]: ./images/
+[image3]: ./images/plot_errorLoss.png "MSE vs Epochs"
 
 #### Sources
 Udacity SDC Nanodegree: [CarND-Behavioral-Cloning-P3](https://github.com/udacity/CarND-Behavioral-Cloning-P3)
@@ -121,7 +121,7 @@ Since the training data is a compilation of image trios gathered
 
 
 #### Dataset creation
-The creation of a dataset is performed using 
+The creation of a dataset is performed using the **simulator** (referenced in sources). To acquire a set of images that encompasses a wide range of sample data, I drove the entire track, in both directions, bearing left and right towards the borders.
 
 ![alt text][image2]
 

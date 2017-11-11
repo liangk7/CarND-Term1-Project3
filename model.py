@@ -178,10 +178,11 @@ model.add(Dense(10))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-model.save('model.h5')
-print('Model Saved')
 
 history_object = model.fit_generator(train_generator, samples_per_epoch = len(X_train), validation_data = validation_generator, nb_val_samples = len(X_valid), nb_epoch=n_epochs, verbose = 1)
+
+model.save('model.h5')
+print('Model Saved')
 
 ###################################
 # MODEL - PERFORMANCE
@@ -194,7 +195,7 @@ plt.title('Mean Squared Error vs Epochs')
 plt.ylabel('MSE')
 plt.xlabel('Epochs')
 plt.legend(['training', 'validation'], loc='upper right')
-plt.savefig('plot_errorLoss.png')
+plt.savefig('images/plot_errorLoss.png')
 plt.ion()
 plt.show()
 
