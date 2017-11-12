@@ -21,8 +21,8 @@ from sklearn.utils import shuffle
 ###################################
 
 # Paths
-img_csvPath = 'data/driving_log.csv'
-img_jpgPath = 'data/IMG/'
+img_csvPath = 'data2/driving_log.csv'
+img_jpgPath = 'data2/IMG/'
 
 # Model parameters
 n_epochs = 5
