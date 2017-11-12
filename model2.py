@@ -54,10 +54,10 @@ def visualizeDistribution(angles):
     hist, bins = np.histogram(angles, num_bins)
     width = 0.5 *(bins[1] - bins[0])
     center = (bins[:-1] + bins[1:]) /2
-    plt.bar(center, hist, align = 'center', width = width)
+    #plt.bar(center, hist, align = 'center', width = width)
     #show average line
-    plt.plot((np.min(angles), np.max(angles)), (average, average), 'k-')
-    plt.savefig('dataDistribution.png')
+    #plt.plot((np.min(angles), np.max(angles)), (average, average), 'k-')
+    #plt.savefig('dataDistribution.png')
     return (bins, hist, average)
     
 def equalize(dataSet, distribution):
@@ -185,7 +185,7 @@ history_object = model.fit_generator(train_generator, samples_per_epoch = len(tr
 model.save('model2.h5')
 print('Model Saved')
 #print(history_object.history.keys())
-
+'''
 plt.gcf().clear()
 plt.plot(history_object.history['loss'])
 plt.plot(history_object.history['val_loss'])
@@ -196,4 +196,4 @@ plt.legend(['training set', 'validation set'], loc = 'upper right')
 plt.savefig('training_curve.png')
 plt.ion()
 plt.show()
-
+'''
