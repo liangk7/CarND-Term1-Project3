@@ -11,6 +11,9 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import sklearn
 
+img_csvPath = 'data2/driving_log.csv'
+img_jpgPath = 'data2/IMG/'
+
 def preprocess(samples, minThresh = 0.001, correctionFactor = 0.2):
     '''
     make list cleaner, remove all points that have an angle of 0
@@ -33,7 +36,7 @@ def preprocess(samples, minThresh = 0.001, correctionFactor = 0.2):
                 correction = -correctionFactor
                 
             source_path = sample[i]
-            filenames.append('data/IMG/' + source_path.split('/')[-1])
+            filenames.append(img_jpgPath + source_path.split('/')[-1])
             angles.append(float(sample[3]) + correction)
 
     filenames = np.array(filenames)
@@ -51,10 +54,10 @@ def visualizeDistribution(angles):
     hist, bins = np.histogram(angles, num_bins)
     width = 0.5 *(bins[1] - bins[0])
     center = (bins[:-1] + bins[1:]) /2
-    #plt.bar(center, hist, align = 'center', width = width)
+    plt.bar(center, hist, align = 'center', width = width)
     #show average line
-    #plt.plot((np.min(angles), np.max(angles)), (average, average), 'k-')
-    #plt.savefig('dataDistribution.png')
+    plt.plot((np.min(angles), np.max(angles)), (average, average), 'k-')
+    plt.savefig('dataDistribution.png')
     return (bins, hist, average)
     
 def equalize(dataSet, distribution):
@@ -135,7 +138,7 @@ def generator(dataSet, batch_size = 32, threshold = 0.3):
 
 ########Code starts here #########################
 samples = []
-with open('data/driving_log.csv') as csvfile:
+with open(img_csvPath) as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         samples.append(line)
@@ -179,10 +182,10 @@ model.compile(loss = 'mse', optimizer = 'adam')
 #Model Fit with Generator
 history_object = model.fit_generator(train_generator, samples_per_epoch = len(train_file_path),
                                      validation_data = validation_generator, nb_val_samples = len(validation_file_path),nb_epoch=5, verbose = 1)
-model.save('model.h5')
+model.save('model2.h5')
 print('Model Saved')
 #print(history_object.history.keys())
-'''
+
 plt.gcf().clear()
 plt.plot(history_object.history['loss'])
 plt.plot(history_object.history['val_loss'])
@@ -193,4 +196,4 @@ plt.legend(['training set', 'validation set'], loc = 'upper right')
 plt.savefig('training_curve.png')
 plt.ion()
 plt.show()
-'''
+
