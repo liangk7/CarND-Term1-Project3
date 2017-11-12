@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import sklearn
 
-img_csvPath = 'data2/driving_log.csv'
-img_jpgPath = 'data2/IMG/'
+img_csvPath = 'data/driving_log.csv'
+img_jpgPath = 'data/IMG/'
 
 def preprocess(samples, minThresh = 0.001, correctionFactor = 0.2):
     '''
