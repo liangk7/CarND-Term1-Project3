@@ -64,7 +64,8 @@ def equalizeData(dataset):
 	dat_paths, dat_angles = shuffle(dataset[0], dataset[1], random_state=0)
 	n_bins = 21
 	angles_avg = len(dat_angles) / n_bins
-	angles_thres = 1.4 * angles_avg
+	angles_thres = angles_avg
+	#angles_thres = 1.4 * angles_avg
 	# visualize histogram of data
 	hist, bin_edges = np.histogram(dat_angles, bins=n_bins)
 	width = 0.8 * (bin_edges[1] - bin_edges[0])
