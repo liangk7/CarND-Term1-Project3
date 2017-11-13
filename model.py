@@ -36,7 +36,7 @@ time_total = time.time()
 ###################################
 
 # Vectorize dataset
-def vectorizeData(dat_csv, correction=0.2, null_thres=0.001):
+def vectorizeData(dat_csv, correction=0.2, null_thres=0.0001):
 	'''
 	takes input image data and splits it into two lists: image paths, angles
 	'''
@@ -64,13 +64,14 @@ def equalizeData(dataset):
 	dat_paths, dat_angles = shuffle(dataset[0], dataset[1], random_state=0)
 	n_bins = 25
 	angles_avg = len(dat_angles) / n_bins
+	angles_thres = 1.4 * angles_avg
 	# visualize histogram of data
 	hist, bin_edges = np.histogram(dat_angles, bins=n_bins)
 	width = 0.8 * (bin_edges[1] - bin_edges[0])
 	center = (bin_edges[:-1] + bin_edges[1:]) / 2
 	#plt.bar(center, hist, align='center', width=width, color='b', label='raw data')
 	# show average line
-	#plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_avg, angles_avg), 'k-')
+	#plt.plot((np.min(dat_angles), np.max(dat_angles)), (angles_thres, angles_thres), 'k-')
 	# create output lists of filepaths and angles
 	dat_paths_out = []
 	dat_angles_out = []
@@ -79,7 +80,7 @@ def equalizeData(dataset):
 		for j in range(len(hist)):
 			if (dat_angles[i] > bin_edges[j]) and (dat_angles[i] <= bin_edges[j+1]):
 			# append filepath and angle if the hist count is within threshold
-				if hist_count[j] <= angles_avg:
+				if hist_count[j] <= angles_thres:
 					hist_count[j] += 1
 					dat_paths_out.append(dat_paths[i])
 					dat_angles_out.append(dat_angles[i])
