@@ -62,7 +62,7 @@ def vectorizeData(dat_csv, correction=0.2, null_thres=0.001):
 # Equalize dataset
 def equalizeData(dataset):
 	dat_paths, dat_angles = shuffle(dataset[0], dataset[1], random_state=0)
-	n_bins = 21
+	n_bins = 25
 	angles_avg = len(dat_angles) / n_bins
 	# visualize histogram of data
 	hist, bin_edges = np.histogram(dat_angles, bins=n_bins)

@@ -49,7 +49,7 @@ def visualizeDistribution(angles):
     create a histogram to see the distribution of the dataset after selection
     returns bins and average
     '''
-    num_bins = 21
+    num_bins = 25
     average = len(angles)/num_bins
     hist, bins = np.histogram(angles, num_bins)
     width = 0.5 *(bins[1] - bins[0])
