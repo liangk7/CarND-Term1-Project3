@@ -36,7 +36,7 @@ time_total = time.time()
 ###################################
 
 # Vectorize dataset
-def vectorizeData(dat_csv, correction=0.2, null_thres=0.0001):
+def vectorizeData(dat_csv, correction=0.2, null_thres=0.000):
 	'''
 	takes input image data and splits it into two lists: image paths, angles
 	'''
@@ -44,7 +44,7 @@ def vectorizeData(dat_csv, correction=0.2, null_thres=0.0001):
 	dat_angle = []
 	for data in dat_csv:
 		# check that angle is above threshold
-		if abs(float(data[3])) > null_thres:
+		if abs(float(data[3])) >= null_thres:
 			for i in range(3):
 				if i == 0:
 					correction_angle = 0
@@ -62,7 +62,7 @@ def vectorizeData(dat_csv, correction=0.2, null_thres=0.0001):
 # Equalize dataset
 def equalizeData(dataset):
 	dat_paths, dat_angles = shuffle(dataset[0], dataset[1], random_state=0)
-	n_bins = 25
+	n_bins = 21
 	angles_avg = len(dat_angles) / n_bins
 	angles_thres = 1.4 * angles_avg
 	# visualize histogram of data
