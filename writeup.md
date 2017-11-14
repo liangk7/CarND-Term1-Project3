@@ -87,6 +87,7 @@ Since the training data is a compilation of image trios gathered
 
 #### Solution performance
 
+![alt text][image2]
 
 #### Model architecture
 
@@ -121,9 +122,9 @@ Since the training data is a compilation of image trios gathered
 
 
 #### Dataset creation
-The creation of a dataset is performed using the **simulator** (referenced in sources). To acquire a set of images that encompasses a wide range of sample data, I drove the entire track, in both directions, bearing left and right towards the borders.
+The creation of a dataset is performed using the **simulator** (referenced in sources). To acquire a set of images that encompasses a wide range of sample data, I drove the entire track, in both directions, bearing left and right along the borders. 
 
-![alt text][image2]
+![alt text][image3]
 
 ---
 
