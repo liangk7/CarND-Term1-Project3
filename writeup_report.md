@@ -10,6 +10,7 @@ The goals / steps of this project are the following:
 * Use the model to drive the vehicle autonomously around the first track in the simulator. The vehicle should remain on the road for an entire loop around the track.
 * Summarize the results with a written report
 
+
 ---
 
 [//]: # (Image References)
@@ -22,11 +23,13 @@ The goals / steps of this project are the following:
 Udacity SDC Nanodegree: [CarND-Behavioral-Cloning-P3](https://github.com/udacity/CarND-Behavioral-Cloning-P3)
 [Simulator](https://github.com/udacity/self-driving-car-sim)
 
+
 ---
 
 ## Writeup / README
 
 This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3 submission](https://github.com/liangk7/CarND-Term1-Project3) in accordance with the [rubric guidelines](https://review.udacity.com/#!/rubrics/432/view)
+
 
 ---
 
@@ -38,6 +41,7 @@ This is the writeup for my Udacity Self-Driving Car Nanodegree Term 1 [Project 3
 - `model.h5`:	file that contains parameters of the autonomous driving model
 - `writeup.md`:	contains the information of project design and usage
 - `video.mp4`:	animation that demonstrates the `model.h5` performance
+
 
 ---
 
@@ -58,6 +62,7 @@ In order to complete the project, one must follow these steps:
 - be sure to pass `model.py` as the model `python drive.py model.h5`
 - open the **simulator** and select *Autonomous Mode*
 
+
 ---
 
 ### Model Architecture and Training Strategy
@@ -69,8 +74,12 @@ The general structure of `model.py` incorporates data normalization and sample e
 
 
 #### Reducing overfitting
-By observing the data, one may notice that there is a large bias towards the angle measurement of `0`. Although `0` is a common, and often desirable, angle value (especially on straightaways), the likelihood of its substantial repetition may also stem from error in the simulation dataset. For example, during the development of data, there may be instances (on a curve) that the user turns too sharply and must compensate by counter-steering. Such action could result in a `0` angle measurement (or even a measurement of opposite polarity). Thus, with the use of linear regression, it may ultimately be more beneficial to limit these types of errors by removing the `0` angle measurements altogether.
-Relative to this occurrence, it is obvious that most angle measurements tend towards smaller magnitude values (closer to 0). Thus, to prevent a large bias in the linear regression function, equalizing the dataset across histogram bins proves to be a valuable technique in developing an accurate model.
+
+By visualizing the dataset, we can determine what measures to take to prevent overfitting.
+
+![alt text][image2]
+
+Paying attention to the raw dataset (shown as blue bars), we can note a bias around the `0` angle as well as small angles (near magnitude `0.2`). To prevent any bearing towards these specific angles, an equalization measure is taken based on the average number of data points per histogran bin (shown as red bars). 
 
 #### Parameter tuning
 The tunable parameters outside of the convultional neural network are:
@@ -78,7 +87,7 @@ The tunable parameters outside of the convultional neural network are:
 - batch size: increase of this parameter will result in an inability to generalize which produces a lower quality model.
 
 #### Training data
-Since the training data is a compilation of image trios gathered 
+Since the training data is a compilation of image trios, the amount of data captured in each lap provides a diverse image pool in which the model can be trained. However, attempts at building a model only with centered lap data proved unsuccessful, with many off-road (water and dirt) gradients being misclassified as drivable routes. To enhance the proper classification of these scenarios, additional data was taken at these segments of the track.
 
 
 ---
@@ -87,7 +96,6 @@ Since the training data is a compilation of image trios gathered
 
 #### Solution performance
 
-![alt text][image2]
 
 #### Model architecture
 
@@ -122,7 +130,7 @@ Since the training data is a compilation of image trios gathered
 
 
 #### Dataset creation
-The creation of a dataset is performed using the **simulator** (referenced in sources). To acquire a set of images that encompasses a wide range of sample data, I drove the entire track, in both directions, bearing left and right along the borders. 
+The creation of a dataset is performed using the **simulator** (referenced in sources). To acquire a set of images that encompasses a wide range of sample data, I drove the entire track, in both directions, bearing left and right along the borders near large gradients (water and dirt paths).
 
 ![alt text][image3]
 
@@ -131,10 +139,10 @@ The creation of a dataset is performed using the **simulator** (referenced in so
 ### Simulation
 
 #### Is the car able to navigate correctly on test data?
-
+As demonstrated in the `video.mp4` file, `model.h5` was able to maneuver the car around the track for a full lap without crossing the lane lines.
 
 
 ---
 
-### Future Implementation
+### Conclusion and Future Implementation
 
