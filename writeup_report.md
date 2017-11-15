@@ -17,7 +17,8 @@ The goals / steps of this project are the following:
 
 [image1]: ./images/figure_nvidiaCNNarchitecture.png "NVIDIA architecture"
 [image2]: ./images/plot_anglesHist.png "Angle Equalization"
-[image3]: ./images/plot_errorLoss.png "MSE vs Epochs"
+[image3]: ./images/ss_modelLoss.png "Model Loss"
+[image4]: ./images/plot_errorLoss.png "MSE vs Epochs"
 
 #### Sources
 Udacity SDC Nanodegree: [CarND-Behavioral-Cloning-P3](https://github.com/udacity/CarND-Behavioral-Cloning-P3)
@@ -84,7 +85,7 @@ Paying attention to the raw dataset (shown as blue bars), we can note a bias aro
 #### Parameter tuning
 The tunable parameters outside of the convultional neural network are:
 - epochs: increase of this parameter will result in a convergence of error loss between training and validation datasets. In the case of the Nvidia CNN model, the choice of 5 epochs yielded a sufficient result for simulation performance
-- batch size: increase of this parameter will result in an inability to generalize which produces a lower quality model.
+- batch size: increase of this parameter will result in an inability to generalize which produces a lower quality model. The default option of `256` was selected and proved sufficient for simulation performance
 
 #### Training data
 Since the training data is a compilation of image trios, the amount of data captured in each lap provides a diverse image pool in which the model can be trained. However, attempts at building a model only with centered lap data proved unsuccessful, with many off-road (water and dirt) gradients being misclassified as drivable routes. To enhance the proper classification of these scenarios, additional data was taken at these segments of the track.
@@ -96,6 +97,8 @@ Since the training data is a compilation of image trios, the amount of data capt
 
 #### Solution performance
 
+
+![alt text][image3]
 
 #### Model architecture
 
@@ -129,20 +132,26 @@ Since the training data is a compilation of image trios, the amount of data capt
 |  Fully Connected	|  outputs 1					|
 
 
+![alt text][image4]
+
 #### Dataset creation
 The creation of a dataset is performed using the **simulator** (referenced in sources). To acquire a set of images that encompasses a wide range of sample data, I drove the entire track, in both directions, bearing left and right along the borders near large gradients (water and dirt paths).
 
-![alt text][image3]
 
 ---
 
 ### Simulation
 
 #### Is the car able to navigate correctly on test data?
-As demonstrated in the `video.mp4` file, `model.h5` was able to maneuver the car around the track for a full lap without crossing the lane lines.
+As demonstrated in the `video.mp4` file, `model.h5` was able to maneuver the car around the track for a full lap without crossing the lane lines. But while the car does remain in the designated path, it tends to utilize an approach that is more corrective than predictive. And with the addition of data that adheres to boundaries and makes hard corrections away from them, the simulated car has a wavering path rather than a smooth curved path.
 
 
 ---
 
-### Conclusion and Future Implementation
+### Closing Thoughts
 
+#### Conclusion
+While many of the techniques utilized in this project were insightful, the simulation clearly demonstrated that a generalized approach towards computer vision using convolutional neural networks on the full environment (with just optical cameras) would not be sufficient in detecting road hazards and compensating for various vehicle orientations.
+
+#### Future Implementation
+After coming to this conclusion, it seems rather unlikely that behavioral cloning would be a cornerstone in the practical deployment of autonomous vehicles. However, in terms of developing a good baseline model of a controlled environment, it may actually hold some value. Although this project was limited to image input data, if the addition of other vehicle telemetries were utilized, behavioral cloning could become an effective tool towards generating predictive models of vehicle performance and ability to respond to potential road hazards.

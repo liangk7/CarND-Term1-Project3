@@ -193,14 +193,21 @@ print('Model Saved')
 plt.gcf().clear()
 plt.plot(history_object.history['loss'])
 plt.plot(history_object.history['val_loss'])
+'''
+plt.figure()
+t = np.array([1, 2, 3, 4, 5])
+xtra = np.array([0.0458, 0.0193, 0.0168, 0.0154, 0.0141])
+xval = np.array([0.0207, 0.0168, 0.0162, 0.0148, 0.0139])
+plt.plot(t, xtra)
+plt.plot(t, xval)
 plt.title('Mean Squared Error vs Epochs')
 plt.ylabel('MSE')
 plt.xlabel('Epochs')
 plt.legend(['training', 'validation'], loc='upper right')
 plt.savefig('images/plot_errorLoss.png')
-plt.ion()
+#plt.ion()
 plt.show()
-'''
+
 ###################################
 # SCRIPT - CLOSING
 ###################################
